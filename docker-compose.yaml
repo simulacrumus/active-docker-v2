@@ -1,0 +1,56 @@
+version: '3.1'
+networks:
+  active-docker-network:
+    driver: bridge
+services: 
+  mysqldb:
+    container_name: active-mysql
+    image: mysql:8.0.25
+    environment:
+      - MYSQL_DATABASE=${MYSQL_DATABASE}
+      - MYSQL_USER=${MYSQL_USER}
+      - MYSQL_PASSWORD=${MYSQL_PASSWORD}
+      - MYSQL_ROOT_PASSWORD=${MYSQL_ROOT_PASSWORD}
+      - TZ=${TIME_ZONE}
+    ports:
+      - ${MYSQL_PORT}:3306
+    restart: always
+    networks:
+      active-docker-network:
+  server:
+    container_name: active-server
+    depends_on:
+      - mysqldb
+    build: ./server
+    restart: always
+    ports:
+      - ${SERVER_PORT}:8080
+    environment:  
+      - MYSQL_HOST=mysqldb
+      - MYSQL_DATABASE=${MYSQL_DATABASE}
+      - MYSQL_PORT=3306
+      - MYSQL_USER=${MYSQL_USER}
+      - MYSQL_PASSWORD=${MYSQL_PASSWORD}
+      - MYSQL_ROOT_PASSWORD=${MYSQL_ROOT_PASSWORD}
+      - API_KEY=${API_KEY}
+      - TZ=${TIME_ZONE}
+    stdin_open: true
+    tty: true
+    networks:
+      active-docker-network:
+  scraper:
+    container_name: active-scraper
+    depends_on:
+      - server
+    build: ./scraper
+    restart: always
+    environment:
+      - MYSQL_HOST=mysqldb
+      - MYSQL_DATABASE=${MYSQL_DATABASE}
+      - MYSQL_PORT=3306
+      - MYSQL_USER=${MYSQL_USER}
+      - MYSQL_PASSWORD=${MYSQL_PASSWORD}
+      - API_KEY=${API_KEY}
+      - TZ=${TIME_ZONE}
+    networks:
+      active-docker-network:
