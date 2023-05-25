@@ -35,6 +35,8 @@ def update_schedules():
 
 if __name__ == '__main__':
     logging.info('Starting Python Web Scraper..')
+    time.sleep(300)
+    update_schedules()
     # update schedules every midnight
     schedule.every().day.at("00:10").do(update_schedules)
     # update activity availability status every 15 mins
