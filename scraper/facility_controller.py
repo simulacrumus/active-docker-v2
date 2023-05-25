@@ -1,4 +1,3 @@
-from os import environ as env
 import logging
 from pyjarowinkler import distance
 from db import *

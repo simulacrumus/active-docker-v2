@@ -1,11 +1,8 @@
-from util import get_json_data
 from facility_controller import *
 from activity_controller import *
 import schedule
 import time
 import logging
-from os import environ as env
-from scraper import *
 import logging
 
 logging.basicConfig(

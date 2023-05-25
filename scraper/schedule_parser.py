@@ -60,32 +60,3 @@ def parse_schedule_string(times_string:str):
         except(RuntimeError) as e:
             logging.error(e)
     return result
-
-# def run():
-#     #  'Noon - 1:30 pm Arena 1 	',
-#     times = ['7:30 - 8:30 am, 8:30 - 9:30 am, 9:30 - 10:30 am, 7:30 - 8 pm',
-#              'Noon - 1 pm',
-#              '9:30 - 10:30 am, 11:30 - 1 pm',
-#              'n/a',
-#              '2:10 - 3:10 pm 3:20 - 4:20 pm',
-#              '11 -noon, Noon - 1 pm, 1 - 3 pm ',
-#              '11 am - 1 pm ',
-#              '1 - 3 pm',
-#              '11 am - noon,  12:15 - 1:15 pm',
-#              '7 - 8:30 am Arena 1   ',
-#              '1:30 - 3 pm Arena 1 ',
-#              '8:15 - 9:15 am, 9:15 - 10:15 am',
-#              '8:15 - 9:15 am 9:15 - 10:15 am',
-#              '2 - 3 pm 3 - 4 pm',
-#              '11:30 am - 12:30 pm',
-#              '11 a, - noon, Noon - 1pm, 7 - 8 pm,  8 - 9 pm',
-#              '3:45 - 4:45 pm, 4:45 - 5:45 pm, 5:45 - 6:45 pm',
-#              '7:30 - 9:30 am, 10:30 am to noon, 8 - 9 pm'
-#             ]
-#     for time in times:
-#         t = parse_schedule_string(time)
-#         print(t)
-#         print()
-
-# if __name__ == '__main__':
-#     run()
