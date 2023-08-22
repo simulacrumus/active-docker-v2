@@ -1,5 +1,5 @@
-from scraper import *
 from util import *
+from scraper import *
 from db import *
 from datetime import datetime
 import logging

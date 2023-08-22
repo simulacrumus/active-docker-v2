@@ -3,25 +3,30 @@ import datetime
 import logging
 
 def format_times_string(times_string:str):
-    # Remove extra info that some facilities have
-    times_string = times_string.replace('Arena 1','')
-    # Some schedules have typos
-    times_string = times_string.replace('a,','am')
-    # Some schedules use to innstead of dash
-    times_string = times_string.replace('to','-')
-    # Weird dash, replace character U+2013 with the character U+002d
-    times_string = times_string.replace("–", "-")
-    # Convert Noon or noon to 12:00pm
-    times_string = re.sub(r'(Noon|noon)',r'12:00pm',times_string)
-    # Keep only numbers,comma, dash, am, pm and colon
-    times_string = re.sub(r'[^0-9apm:,-]', '', times_string)
-    # Add missing comma
-    times_string = re.sub(r'([0-9:apmAPM]+-[0-9:apmAPM]+[apmAPM])', r'\1,', times_string)
-    # Remove double commas
-    times_string =  re.sub(r',+', ',', times_string)
-    #Remove extra comma at the end
-    times_string = re.sub(r',\s*$', '', times_string)
-    return times_string
+    try:
+        # Remove extra info that some facilities have
+        times_string = times_string.replace('Arena 1','')
+        # Some schedules have typos
+        times_string = times_string.replace('a,','am')
+        # Some schedules have . instead of ,
+        times_string = times_string.replace('am.','am,')
+        # Some schedules use to innstead of dash
+        times_string = times_string.replace('to','-')
+        # Weird dash, replace character U+2013 with the character U+002d
+        times_string = times_string.replace("–", "-")
+        # Convert Noon or noon to 12:00pm
+        times_string = re.sub(r'(Noon|noon)',r'12:00pm',times_string)
+        # Keep only numbers,comma, dash, am, pm and colon
+        times_string = re.sub(r'[^0-9apm:,-]', '', times_string)
+        # Add missing comma
+        times_string = re.sub(r'([0-9:apmAPM]+-[0-9:apmAPM]+[apmAPM])', r'\1,', times_string)
+        # Remove double commas
+        times_string =  re.sub(r',+', ',', times_string)
+        #Remove extra comma at the end
+        times_string = re.sub(r',\s*$', '', times_string)
+        return times_string
+    except(Exception) as e:
+        return ''
 
 def create_time(am_pm, time_string):
     time = re.sub(r'[^\d]+', '', time_string)

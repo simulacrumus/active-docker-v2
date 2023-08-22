@@ -1,21 +1,22 @@
 from scraper import *
-from db import *
+from db import get_activities
 from datetime import datetime
 from datetime import date
 from pyjarowinkler import distance
 from builder import *
+import logging
 
 def add_scraped_activities_to_facilities(facilities:list):
+    curent_activities = get_activities()
     for facility in facilities:
         # logging.info('Scraping activities for {}'.format(facility['title']))
         facility['soup'] = get_soup_for_url(url=facility['url'])
         facility_activities = scrape_facility_schedules(soup=facility['soup'])
-        facility['activities'] = transform_schedules(facility_activities)
+        facility['activities'] = transform_schedules(facility_activities, curent_activities)
         facility.pop('soup', None)
     return facilities
 
-def transform_schedules(facility_activities):
-    current_activities = get_current_activities()
+def transform_schedules(facility_activities, current_activities):
     activities = []
     for facility_activity in facility_activities:
         try:
@@ -25,10 +26,6 @@ def transform_schedules(facility_activities):
         except(RuntimeError) as e:
             logging.warning(e)
     return activities
-
-def get_current_activities():
-    current_activities = get_activities()
-    return current_activities
 
 def get_activity_by_scraped_activity_title(current_activities:list, activity_title):
     matched_activity = {}
@@ -74,8 +71,8 @@ def save_activities_for_facilities(facilities):
                 availability_count = availability_count + 1
                 a = {"activity_id":activity['id'],"start_time":time['start_time'],"end_time":time['end_time'],"facility_branch_id":facility_branch_id}
                 save_activity(a)
-        # logging.info('Activities for {} saved, total number of avaiability: {}'.format(facility['title'], availability_count))
-    # logging.info('All activities saved')    
+        logging.info('Activities for {} saved, total number of avaiability: {}'.format(facility['title'], availability_count))
+    logging.info('All activities saved')    
    
 def update_status_of_all_activities():
     logging.info('Updating status of activities')

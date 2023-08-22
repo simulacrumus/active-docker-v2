@@ -135,10 +135,14 @@ def scrape_activity_title(soup):
         except(Exception) as e:
             logging.warning('Could not scrape activity title')
             logging.warning(e)
-    title = re.compile(r'[\u202f\u00a0\u00ae]').sub('', title).strip()
-    title = re.compile(r'[\u2013]').sub('-', title).strip()
-    title = re.compile(r'[\u2019]').sub('\'', title).strip()
-    return regex.sub("", title)
+    try:
+        title = re.compile(r'[\u202f\u00a0\u00ae]').sub('', title).strip()
+        title = re.compile(r'[\u2013]').sub('-', title).strip()
+        title = re.compile(r'[\u2019]').sub('\'', title).strip()
+        title = regex.sub("", title)
+    except(Exception) as e:
+        logging.warning(e)
+    return title
 
 def scrape_activity_hours(soup):
     regex = re.compile(r'[\n\r\t]')

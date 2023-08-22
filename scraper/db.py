@@ -5,6 +5,7 @@ from sqlalchemy.exc import IntegrityError
 from sqlalchemy import update
 from sqlalchemy import and_
 from os import environ as env
+import logging
 
 def get_db_engine():
     connection_string = 'mysql+mysqlconnector://{MYSQL_USER}:{MYSQL_PASSWORD}@{MYSQL_HOST}:{MYSQL_PORT}/{MYSQL_DATABASE}'.format(
@@ -14,6 +15,7 @@ def get_db_engine():
         MYSQL_PORT = env['MYSQL_PORT'],
         MYSQL_DATABASE = env['MYSQL_DATABASE']
     )
+
     engine = sqlalchemy.create_engine(connection_string,echo=False, future=True)
     return engine
 
@@ -25,8 +27,8 @@ def get_facilities():
         for db_facility in db_facilities:
             facility = {}
             facility["id"] = db_facility[0].id
-            facility["title"] = get_description_by_translation_id(id=db_facility[0].title_translation_id)
-            facility["url"] = get_description_by_translation_id(id=db_facility[0].url_translation_id)
+            facility["title"] = get_description_by_translation_id(engine,id=db_facility[0].title_translation_id)
+            facility["url"] = get_description_by_translation_id(engine,id=db_facility[0].url_translation_id)
             facility["branches"] = []
             for db_branch in db_facility[0].facility_branches:
                 facility["branches"].append({"id":db_branch.id,"description":db_branch.description})
@@ -40,9 +42,11 @@ def get_facility_branches():
         facility_branches = []
         for db_facility_branch in db_facility_branches:
             facility_branches.append(db_facility_branch[0].id)
+        session.close()
         return facility_branches
 
 def get_activities():
+    logging.info('Getting all current activities')
     engine = get_db_engine()
     with Session(engine) as session:
         activities = []
@@ -51,16 +55,19 @@ def get_activities():
             activity = {}
             activity["id"] = db_activity[0].id
             activity["type_id"] = db_activity[0].type_id
-            activity["title"] = get_description_by_translation_id(id=db_activity[0].title_translation_id)
+            activity["title"] = get_description_by_translation_id(engine, id=db_activity[0].title_translation_id)
             type = db_activity[0].type
             activity["category_id"] = type.category_id
             activities.append(activity)
+        session.close()
         return activities
 
-def get_description_by_translation_id(id:int):
+def get_description_by_translation_id(engine, id:int):
     engine = get_db_engine()
     with Session(engine) as session:
-        return session.execute(sqlalchemy.select(LanguageTranslation).where(LanguageTranslation.translation_id == id and LanguageTranslation.language_id == 'en')).first()[0].description
+        description =  session.execute(sqlalchemy.select(LanguageTranslation).where(LanguageTranslation.translation_id == id and LanguageTranslation.language_id == 'en')).first()[0].description
+        session.close()
+        return description
 
 def save_activity(activity):
     engine = get_db_engine()

@@ -1,9 +1,8 @@
+import logging
 from facility_controller import *
 from activity_controller import *
 import schedule
 import time
-import logging
-import logging
 
 logging.basicConfig(
     format='%(asctime)s %(levelname)-8s %(message)s',
@@ -35,6 +34,7 @@ def update_schedules():
 
 if __name__ == '__main__':
     logging.info('Starting Python Web Scraper..')
+    update_schedules()
     # update schedules every midnight
     schedule.every().day.at("00:10").do(update_schedules)
     # update activity availability status every 15 mins
