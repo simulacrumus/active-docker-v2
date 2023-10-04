@@ -70,9 +70,9 @@ def scrape_facility_operating_hours(soup):
             for day in days:
                 if day is not None:
                     label = day.find("span",{"class":"office-hours__item-label"}).string
-                    label = re.sub("^[A-Za-z]*$", '', label).replace(':','').strip()
+                    label = re.sub("^[A-Za-z]*$", '', str(label)).replace(':','').strip()
                     slots = day.find("span",{"class":"office-hours__item-slots"}).string
-                    slots = re.sub("^[A-Za-z0-9-]*$", '', slots).strip()
+                    slots = re.sub("^[A-Za-z0-9-]*$", '', str(slots)).strip()
                     hours[label] = slots
         return hours
     except(ConnectionError, Exception) as e:
@@ -117,7 +117,6 @@ def scrape_facility_schedules(soup):
             if title:
                 hours = scrape_activity_hours(soup=schedule)
                 all_schedules.append({"title":title,"schedules":hours})
-                # all_schedules[title] = hours
     return all_schedules
 
 def scrape_activity_title(soup):
@@ -136,10 +135,10 @@ def scrape_activity_title(soup):
             logging.warning('Could not scrape activity title')
             logging.warning(e)
     try:
-        title = re.compile(r'[\u202f\u00a0\u00ae]').sub('', title).strip()
-        title = re.compile(r'[\u2013]').sub('-', title).strip()
-        title = re.compile(r'[\u2019]').sub('\'', title).strip()
-        title = regex.sub("", title)
+        title = re.compile(r'[\u202f\u00a0\u00ae]').sub('', str(title)).strip()
+        title = re.compile(r'[\u2013]').sub('-', str(title)).strip()
+        title = re.compile(r'[\u2019]').sub('\'', str(title)).strip()
+        title = regex.sub("", str(title))
     except(Exception) as e:
         logging.warning(e)
     return title
@@ -154,7 +153,7 @@ def scrape_activity_hours(soup):
         try:
             if hour_str.em: hours_str =  hour_str.em.decompose()
             if hour_str.span: hour_str = hour_str.span.decompose()
-            hour_str = regex.sub("", hour_str.text)
+            hour_str = regex.sub("", str(hour_str.text))
             times = parse_schedule_string(hour_str)
             hours.append({"day":days[index],"times":times})
             index = index+1

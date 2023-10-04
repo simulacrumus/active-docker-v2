@@ -15,21 +15,22 @@ def format_times_string(times_string:str):
         # Weird dash, replace character U+2013 with the character U+002d
         times_string = times_string.replace("–", "-")
         # Convert Noon or noon to 12:00pm
-        times_string = re.sub(r'(Noon|noon)',r'12:00pm',times_string)
+        times_string = re.sub(r'(Noon|noon)',r'12:00pm',str(times_string))
         # Keep only numbers,comma, dash, am, pm and colon
-        times_string = re.sub(r'[^0-9apm:,-]', '', times_string)
+        times_string = re.sub(r'[^0-9apm:,-]', '', str(times_string))
         # Add missing comma
-        times_string = re.sub(r'([0-9:apmAPM]+-[0-9:apmAPM]+[apmAPM])', r'\1,', times_string)
+        times_string = re.sub(r'([0-9:apmAPM]+-[0-9:apmAPM]+[apmAPM])', r'\1,', str(times_string))
         # Remove double commas
-        times_string =  re.sub(r',+', ',', times_string)
+        times_string =  re.sub(r',+', ',', str(times_string))
         #Remove extra comma at the end
-        times_string = re.sub(r',\s*$', '', times_string)
+        times_string = re.sub(r',\s*$', '', str(times_string))
         return times_string
     except(Exception) as e:
+        logging.warning(e)
         return ''
 
 def create_time(am_pm, time_string):
-    time = re.sub(r'[^\d]+', '', time_string)
+    time = re.sub(r'[^\d]+', '', str(time_string))
     if len(time) == 1: time = "0"+time+"00"
     elif len(time) == 2: time = time+"00"
     elif len(time) == 3: time = "0"+time
