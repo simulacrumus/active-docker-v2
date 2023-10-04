@@ -35,14 +35,14 @@ def update_schedules():
 if __name__ == '__main__':
     logging.info('Starting Python Web Scraper..')
     # initial update
-    # update_schedules()
+    update_schedules()
     # update schedules every midnight
     schedule.every().day.at("00:10").do(update_schedules)
     # update activity availability status every 15 mins
-    schedule.every().hour.at(":01").do(update_activity_status)
-    schedule.every().hour.at(":15").do(update_activity_status)
-    schedule.every().hour.at(":30").do(update_activity_status)
-    schedule.every().hour.at(":45").do(update_activity_status)
+    # schedule.every().hour.at(":01").do(update_activity_status)
+    # schedule.every().hour.at(":15").do(update_activity_status)
+    # schedule.every().hour.at(":30").do(update_activity_status)
+    # schedule.every().hour.at(":45").do(update_activity_status)
     while 1:
         schedule.run_pending()
         time.sleep(1)
