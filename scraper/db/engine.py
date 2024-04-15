@@ -9,3 +9,6 @@ def create_db_engine():
         MYSQL_PORT = env['MYSQL_PORT'],
         MYSQL_DATABASE = env['MYSQL_DATABASE']
     )
+
+    engine = sqlalchemy.create_engine(connection_string,echo=False, future=True)
+    return engine
