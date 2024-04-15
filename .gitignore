@@ -7,3 +7,4 @@ scraper/__pycache__/
 server/target/
 server/build/
 .DS_Store
+scraper_v1
