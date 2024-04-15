@@ -73,6 +73,7 @@ public class FacilityServiceImp implements FacilityService {
                 .stream()
                 .map(facilityType -> mapper.toDTO(facilityType.getFacility(), params.getLanguage(), params.getLatitude(), params.getLongitude()))
                 .filter(facilityDTO -> stringDistanceScore(params.getQuery(), facilityDTO.getTitle()) < MAX_STRING_EDIT_DISTANCE)
+                .distinct()
                 .sorted(Comparator.comparing(facilityDTO -> stringDistanceScore(params.getQuery(), facilityDTO.getTitle())))
                 .sorted(getComparator(params.getSortEnum()))
                 .collect(Collectors.toList());
