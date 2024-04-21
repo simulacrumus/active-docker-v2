@@ -42,9 +42,6 @@ jobs:
           export MYSQL_PORT="${{ secrets.MYSQL_PORT }}"
           export MYSQL_ROOT_PASSWORD="${{ secrets.MYSQL_ROOT_PASSWORD }}"
           export MYSQL_USER="${{ secrets.MYSQL_USER }}"
-          export SERVER_HOST="${{ secrets.SERVER_HOST }}"
-          export SERVER_SSH_KEY="${{ secrets.SERVER_SSH_KEY }}"
-          export SERVER_USERNAME="${{ secrets.SERVER_USERNAME }}"
           export TIME_ZONE="${{ secrets.TIME_ZONE }}"
       - name: Clean and rerun the containers
         run: |
