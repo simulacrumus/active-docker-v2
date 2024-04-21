@@ -1,7 +1,7 @@
 import sqlalchemy
 import logging
 from .engine import *
-from .schema import Facility, FacilityBranch, FacilityType
+from .schema import Facility, FacilityType
 from sqlalchemy.orm import Session
 from .translation import get_description_by_translation_id
 from sqlalchemy.exc import IntegrityError

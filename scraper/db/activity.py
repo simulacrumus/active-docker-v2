@@ -5,14 +5,12 @@ from sqlalchemy.orm import Session
 from sqlalchemy.exc import IntegrityError
 from .translation import get_description_by_translation_id
 from .engine import create_db_engine
-from sqlalchemy import update, and_
-from datetime import datetime
 
-engine = create_db_engine()
+db_engine = create_db_engine()
 
 def saved_activities():
     logging.info('Retrieving activities from db')
-    with Session(engine) as session:
+    with Session(db_engine) as session:
         activities = []
         db_activities = session.execute(sqlalchemy.select(Activity))
         for db_activity in db_activities:
@@ -32,6 +30,7 @@ def save_activity(session, activity):
         session.commit()
     except(IntegrityError) as e:
         # logging.warning(e._message)
+        # since this error occurs when there are duplicates, no need to log it
         pass
 
         
