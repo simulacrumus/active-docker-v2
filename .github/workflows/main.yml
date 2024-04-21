@@ -21,7 +21,7 @@ jobs:
           key: ${{ secrets.SERVER_SSH_KEY }}
           source: "." 
           target: "~/active"
-          args: -r -o
+          args: -r
 
   clean_and_rerun_containers:
     runs-on: ubuntu-latest
