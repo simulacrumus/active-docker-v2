@@ -19,6 +19,8 @@ jobs:
         run: |
           echo Testing secrets
           echo "$SERVER_HOST"
+          echo ${#SERVER_HOST}
+          echo ${SERVER_HOST}
       - name: Copy code to server using SSH
         uses: appleboy/scp-action@master
         with:
