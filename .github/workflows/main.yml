@@ -18,7 +18,7 @@ jobs:
           SERVER_HOST: ${{ secrets.SERVER_HOST }}
         run: |
           echo Testing secrets
-          echo "$SERVER_HOST"
+          echo "$secrets.SERVER_HOST"
           echo ${#SERVER_HOST}
           echo ${SERVER_HOST}
       - name: Copy code to server using SSH
