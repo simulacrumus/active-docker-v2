@@ -22,6 +22,7 @@ jobs:
           source: "." 
           target: "~/active"
           args: -r
+        timeout-minutes: 5
 
   clean_and_rerun_containers:
     runs-on: ubuntu-latest
