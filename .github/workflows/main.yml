@@ -15,7 +15,8 @@ jobs:
 
       - name: Test secrets
         run: |
-          echo "SERVER_HOST: ${{ secrets.Production.SERVER_HOST }}"
+          echo "SERVER_HOST: ${{ env.SERVER_HOST }}"
+          echo "SERVER_HOST: ${{ env.Production.SERVER_HOST }}"
 
       - name: Copy code to server using SSH
         uses: appleboy/scp-action@master
