@@ -40,11 +40,11 @@ jobs:
            # docker rm "${API_SERVER_CONTAINER_NAME}" || true
            # docker rm "${SCRAPER_CONTAINER_NAME}" || true
            
-           docker stop ${{ secrets.API_SERVER_CONTAINER_NAME }} || true
-           docker stop ${{ secrets.SCRAPER_CONTAINER_NAME }} || true
+           docker stop ${{ secrets.API_SERVER_CONTAINER_NAME }}  2> /dev/null || true
+           docker stop ${{ secrets.SCRAPER_CONTAINER_NAME }}  2> /dev/null || true
 
-           docker rm ${{ secrets.API_SERVER_CONTAINER_NAME }} || true
-           docker rm ${{ secrets.SCRAPER_CONTAINER_NAME }} || true
+           docker rm ${{ secrets.API_SERVER_CONTAINER_NAME }}  2> /dev/null || true
+           docker rm ${{ secrets.SCRAPER_CONTAINER_NAME }}  2> /dev/null || true
 
            cd ~/active
            docker compose up -d
