@@ -35,8 +35,11 @@ jobs:
           key: ${{ secrets.SERVER_SSH_KEY }}
           script: |
            cd ~/active
-           docker compose down
-           docker compose up
+           docker stop ${{ secrets.API_SERVER_CONTAINER_NAME }}  2> /dev/null || true
+           docker stop ${{ secrets.SCRAPER_CONTAINER_NAME }}  2> /dev/null || true
+           docker rm ${{ secrets.API_SERVER_CONTAINER_NAME }}  2> /dev/null || true
+           docker rm ${{ secrets.SCRAPER_CONTAINER_NAME }}  2> /dev/null || true
+           docker compose up -d
            
         env:
           API_SERVER_PORT: ${{ secrets.API_SERVER_PORT }}
