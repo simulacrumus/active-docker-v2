@@ -34,17 +34,17 @@ jobs:
           username: ${{ secrets.SERVER_USERNAME }}
           key: ${{ secrets.SERVER_SSH_KEY }}
           script: |
-           docker stop "${API_SERVER_CONTAINER_NAME}" || true
-           docker stop "${SCRAPER_CONTAINER_NAME}" || true
+           # docker stop "${API_SERVER_CONTAINER_NAME}" || true
+           # docker stop "${SCRAPER_CONTAINER_NAME}" || true
            
-           docker rm "${API_SERVER_CONTAINER_NAME}" || true
-           docker rm "${SCRAPER_CONTAINER_NAME}" || true
+           # docker rm "${API_SERVER_CONTAINER_NAME}" || true
+           # docker rm "${SCRAPER_CONTAINER_NAME}" || true
            
-           # docker stop -q ${{ secrets.API_SERVER_CONTAINER_NAME }}
-           # docker stop -q ${{ secrets.SCRAPER_CONTAINER_NAME }}
+           docker stop ${{ secrets.API_SERVER_CONTAINER_NAME }} || true
+           docker stop ${{ secrets.SCRAPER_CONTAINER_NAME }} || true
 
-           # docker rm -q ${{ secrets.API_SERVER_CONTAINER_NAME }}
-           # docker rm -q ${{ secrets.SCRAPER_CONTAINER_NAME }}
+           docker rm ${{ secrets.API_SERVER_CONTAINER_NAME }} || true
+           docker rm ${{ secrets.SCRAPER_CONTAINER_NAME }} || true
 
            cd ~/active
            docker compose up -d
