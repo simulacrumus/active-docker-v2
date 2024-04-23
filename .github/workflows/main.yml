@@ -34,21 +34,17 @@ jobs:
           username: ${{ secrets.SERVER_USERNAME }}
           key: ${{ secrets.SERVER_SSH_KEY }}
           script: |
-           if docker ps -a --format '{{.Names}}' --filter name="${API_SERVER_CONTAINER_NAME}" | grep -q "${API_SERVER_CONTAINER_NAME}"; then
-            docker stop "${API_SERVER_CONTAINER_NAME}"
-            docker rm "${API_SERVER_CONTAINER_NAME}"
-           fi
-            
-           if docker ps -a --format '{{.Names}}' --filter name="${SCRAPER_CONTAINER_NAME}" | grep -q "${SCRAPER_CONTAINER_NAME}"; then
-            docker stop "${SCRAPER_CONTAINER_NAME}"
-            docker rm "${SCRAPER_CONTAINER_NAME}"
-           fi
+           docker stop -q "${API_SERVER_CONTAINER_NAME}"
+           docker stop -q "${SCRAPER_CONTAINER_NAME}"
            
-           # docker stop ${{ secrets.API_SERVER_CONTAINER_NAME }}
-           # docker stop ${{ secrets.SCRAPER_CONTAINER_NAME }}
+           docker rm -q "${API_SERVER_CONTAINER_NAME}"
+           docker rm -q "${SCRAPER_CONTAINER_NAME}"
+           
+           # docker stop -q ${{ secrets.API_SERVER_CONTAINER_NAME }}
+           # docker stop -q ${{ secrets.SCRAPER_CONTAINER_NAME }}
 
-           # docker rm ${{ secrets.API_SERVER_CONTAINER_NAME }}
-           # docker rm ${{ secrets.SCRAPER_CONTAINER_NAME }}
+           # docker rm -q ${{ secrets.API_SERVER_CONTAINER_NAME }}
+           # docker rm -q ${{ secrets.SCRAPER_CONTAINER_NAME }}
 
            cd ~/active
            docker compose up -d
