@@ -34,20 +34,9 @@ jobs:
           username: ${{ secrets.SERVER_USERNAME }}
           key: ${{ secrets.SERVER_SSH_KEY }}
           script: |
-           # docker stop "${API_SERVER_CONTAINER_NAME}" || true
-           # docker stop "${SCRAPER_CONTAINER_NAME}" || true
-           
-           # docker rm "${API_SERVER_CONTAINER_NAME}" || true
-           # docker rm "${SCRAPER_CONTAINER_NAME}" || true
-           
-           docker stop ${{ secrets.API_SERVER_CONTAINER_NAME }}  2> /dev/null || true
-           docker stop ${{ secrets.SCRAPER_CONTAINER_NAME }}  2> /dev/null || true
-
-           docker rm ${{ secrets.API_SERVER_CONTAINER_NAME }}  2> /dev/null || true
-           docker rm ${{ secrets.SCRAPER_CONTAINER_NAME }}  2> /dev/null || true
-
            cd ~/active
-           docker compose up -d --no-recreate
+           docker compose down
+           docker compose up
            
         env:
           API_SERVER_PORT: ${{ secrets.API_SERVER_PORT }}
