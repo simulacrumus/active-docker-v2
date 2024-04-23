@@ -15,6 +15,8 @@ services:
     ports:
       - ${MYSQL_PORT}:3306
     restart: always
+    volumes:
+      - db_data:/var/lib/mysql
     networks:
       active-docker-network:
   server:
@@ -29,7 +31,7 @@ services:
     environment:  
       - MYSQL_HOST=mysqldb
       - MYSQL_DATABASE=${MYSQL_DATABASE}
-      - MYSQL_PORT=3306
+      - MYSQL_PORT=${MYSQL_PORT}
       - MYSQL_USER=${MYSQL_USER}
       - MYSQL_PASSWORD=${MYSQL_PASSWORD}
       - MYSQL_ROOT_PASSWORD=${MYSQL_ROOT_PASSWORD}
@@ -49,10 +51,12 @@ services:
     environment:
       - MYSQL_HOST=mysqldb
       - MYSQL_DATABASE=${MYSQL_DATABASE}
-      - MYSQL_PORT=3306
+      - MYSQL_PORT=${MYSQL_PORT}
       - MYSQL_USER=${MYSQL_USER}
       - MYSQL_PASSWORD=${MYSQL_PASSWORD}
       - API_KEY=${API_KEY}
       - TZ=${TIME_ZONE}
     networks:
       active-docker-network:
+volumes:
+  db_data:
