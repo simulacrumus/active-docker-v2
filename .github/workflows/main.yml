@@ -3,7 +3,7 @@ name: Server Build and Run
 on:
   push:
     branches:
-      - master
+      - main  # Adjust the branch name as needed
 
 jobs:
   copy_source_code_to_server:
@@ -35,27 +35,26 @@ jobs:
           key: ${{ secrets.SERVER_SSH_KEY }}
           
       - name: Set up environment variables
-        run: |
-          export API_SERVER_PORT="${{ secrets.API_SERVER_PORT }}"
-          export MYSQL_DATABASE="${{ secrets.MYSQL_DATABASE }}"
-          export MYSQL_PASSWORD="${{ secrets.MYSQL_PASSWORD }}"
-          export MYSQL_PORT="${{ secrets.MYSQL_PORT }}"
-          export MYSQL_ROOT_PASSWORD="${{ secrets.MYSQL_ROOT_PASSWORD }}"
-          export MYSQL_USER="${{ secrets.MYSQL_USER }}"
-          export TIME_ZONE="${{ secrets.TIME_ZONE }}"
+        env:
+          API_SERVER_PORT: ${{ secrets.API_SERVER_PORT }}
+          MYSQL_DATABASE: ${{ secrets.MYSQL_DATABASE }}
+          MYSQL_PASSWORD: ${{ secrets.MYSQL_PASSWORD }}
+          MYSQL_PORT: ${{ secrets.MYSQL_PORT }}
+          MYSQL_ROOT_PASSWORD: ${{ secrets.MYSQL_ROOT_PASSWORD }}
+          MYSQL_USER: ${{ secrets.MYSQL_USER }}
+          TIME_ZONE: ${{ secrets.TIME_ZONE }}
+        run: echo "Environment variables are set up"
           
       - name: Stop containers
         run: |
-          docker stop ${{ secrets.API_SERVER_CONTAINER_NAME }}
-          docker stop ${{ secrets.SCRAPER_CONTAINER_NAME }}
+          ssh ${{ secrets.SERVER_USERNAME }}@${{ secrets.SERVER_HOST }} "docker stop ${{ secrets.API_SERVER_CONTAINER_NAME }}"
+          ssh ${{ secrets.SERVER_USERNAME }}@${{ secrets.SERVER_HOST }} "docker stop ${{ secrets.SCRAPER_CONTAINER_NAME }}"
       
       - name: Remove containers
         run: |
-          docker rm ${{ secrets.API_SERVER_CONTAINER_NAME }}
-          docker rm ${{ secrets.SCRAPER_CONTAINER_NAME }}
+          ssh ${{ secrets.SERVER_USERNAME }}@${{ secrets.SERVER_HOST }} "docker rm ${{ secrets.API_SERVER_CONTAINER_NAME }}"
+          ssh ${{ secrets.SERVER_USERNAME }}@${{ secrets.SERVER_HOST }} "docker rm ${{ secrets.SCRAPER_CONTAINER_NAME }}"
 
       - name: Build and run containers
         run: |
-          cd ~/active
-          
-          docker-compose up -d
+          ssh ${{ secrets.SERVER_USERNAME }}@${{ secrets.SERVER_HOST }} "cd ~/active && docker-compose up -d"
