@@ -6,9 +6,11 @@ from pyjarowinkler import distance
 from datetime import date
 from datetime import datetime
 
+db_engine = create_db_engine()
+
 def update_activities_for_facilities(facilities:list):
     current_activities = saved_activities()
-    with Session(engine) as session:
+    with Session(db_engine) as session:
         for facility in facilities:
             logging.info('Scraping activities for {}'.format(facility['title']))
             soup = get_soup_for_url(url=facility['url'])
