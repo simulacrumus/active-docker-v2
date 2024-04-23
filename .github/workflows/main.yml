@@ -29,6 +29,14 @@ jobs:
     steps:
       - name: Connect to server
         uses: appleboy/ssh-action@v1.0.3
+        env:
+         API_SERVER_PORT: ${{ secrets.API_SERVER_PORT }}
+         MYSQL_DATABASE: ${{ secrets.MYSQL_DATABASE }}
+         MYSQL_PASSWORD: ${{ secrets.MYSQL_PASSWORD }}
+         MYSQL_PORT: ${{ secrets.MYSQL_PORT }}
+         MYSQL_ROOT_PASSWORD: ${{ secrets.MYSQL_ROOT_PASSWORD }}
+         MYSQL_USER: ${{ secrets.MYSQL_USER }}
+         TIME_ZONE: ${{ secrets.TIME_ZONE }}
         with:
           host: ${{ secrets.SERVER_HOST }}
           username: ${{ secrets.SERVER_USERNAME }}
@@ -39,14 +47,4 @@ jobs:
            docker stop ${{ secrets.SCRAPER_CONTAINER_NAME }}  2> /dev/null || true
            docker rm ${{ secrets.API_SERVER_CONTAINER_NAME }}  2> /dev/null || true
            docker rm ${{ secrets.SCRAPER_CONTAINER_NAME }}  2> /dev/null || true
-           docker compose up -d
-           
-        env:
-          API_SERVER_PORT: ${{ secrets.API_SERVER_PORT }}
-          MYSQL_DATABASE: ${{ secrets.MYSQL_DATABASE }}
-          MYSQL_PASSWORD: ${{ secrets.MYSQL_PASSWORD }}
-          MYSQL_PORT: ${{ secrets.MYSQL_PORT }}
-          MYSQL_ROOT_PASSWORD: ${{ secrets.MYSQL_ROOT_PASSWORD }}
-          MYSQL_USER: ${{ secrets.MYSQL_USER }}
-          TIME_ZONE: ${{ secrets.TIME_ZONE }}
-          
+           docker compose up -d          
