@@ -12,3 +12,5 @@ def create_db_engine():
 
     engine = sqlalchemy.create_engine(connection_string,echo=False, future=True)
     return engine
+
+db_engine = create_db_engine()

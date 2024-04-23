@@ -4,23 +4,25 @@ from .schema import Availability, Activity
 from sqlalchemy.orm import Session
 from sqlalchemy.exc import IntegrityError
 from .translation import get_description_by_translation_id
-from .engine import create_db_engine
-
-db_engine = create_db_engine()
+from .engine import db_engine
 
 def saved_activities():
     logging.info('Retrieving activities from db')
     with Session(db_engine) as session:
         activities = []
-        db_activities = session.execute(sqlalchemy.select(Activity))
-        for db_activity in db_activities:
-            activity = {}
-            activity["id"] = db_activity[0].id
-            activity["type_id"] = db_activity[0].type_id
-            activity["title"] = get_description_by_translation_id(session, id=db_activity[0].title_translation_id)
-            type = db_activity[0].type
-            activity["category_id"] = type.category_id
-            activities.append(activity)
+        try:
+            db_activities = session.execute(sqlalchemy.select(Activity))
+            for db_activity in db_activities:
+                activity = {}
+                activity["id"] = db_activity[0].id
+                activity["type_id"] = db_activity[0].type_id
+                activity["title"] = get_description_by_translation_id(session, id=db_activity[0].title_translation_id)
+                type = db_activity[0].type
+                activity["category_id"] = type.category_id
+                activities.append(activity)
+        except(Exception) as e:
+            logging.error("Could not retrieve actiivities from db")
+            logging.error(e)
         session.close()
         return activities
     

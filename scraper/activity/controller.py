@@ -1,13 +1,10 @@
 from db.activity import *
 from db.faciliity import *
-from db.engine import *
+from db.engine import db_engine
 from utility import *
 from .scraper import * 
 from pyjarowinkler import distance
-from datetime import date
-from datetime import datetime
-
-db_engine = create_db_engine()
+from datetime import date, datetime
 
 def update_activities_for_facilities(facilities:list):
     current_activities = saved_activities()

@@ -1,12 +1,10 @@
 import sqlalchemy
 import logging
-from .engine import *
+from .engine import db_engine
 from .schema import Facility, FacilityType
 from sqlalchemy.orm import Session
 from .translation import get_description_by_translation_id
 from sqlalchemy.exc import IntegrityError
-
-db_engine = create_db_engine()
 
 def db_facilities():
     logging.info('Retrieving facilities from db')
