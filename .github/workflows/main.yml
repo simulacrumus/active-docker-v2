@@ -41,7 +41,7 @@ jobs:
            docker rm ${{ secrets.SCRAPER_CONTAINER_NAME }}
 
            cd ~/active
-           docker-compose up -d
+           docker compose up -d
            
         env:
           API_SERVER_PORT: ${{ secrets.API_SERVER_PORT }}
