@@ -36,9 +36,5 @@ jobs:
           script: |
            cp environment/.env active/.env
            cd ~/active
-           # docker compose down
-           docker stop ${{ secrets.API_SERVER_CONTAINER_NAME }}  2> /dev/null || true
-           docker stop ${{ secrets.SCRAPER_CONTAINER_NAME }}  2> /dev/null || true
-           docker rm ${{ secrets.API_SERVER_CONTAINER_NAME }}  2> /dev/null || true
-           docker rm ${{ secrets.SCRAPER_CONTAINER_NAME }}  2> /dev/null || true
+           docker compose down
            docker compose up -d          
