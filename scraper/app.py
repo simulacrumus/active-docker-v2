@@ -19,10 +19,7 @@ def run():
 
 if __name__ == '__main__':
     logging.info('Starting Python Web Scraper..')
-    try:
-        run()
-    except(Exception) as e:
-        logging.error(e)
+    run()
     schedule.every().day.at("00:10").do(run)
     while 1:
         schedule.run_pending()
