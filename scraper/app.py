@@ -5,7 +5,7 @@ from facility.controller import *
 from activity.controller import *
 
 logging.basicConfig(
-    filename='app.log',
+    # filename='app.log',
     format='%(asctime)s %(levelname)-8s %(message)s',
     level=logging.INFO,
     datefmt='%Y-%m-%d %H:%M:%S'
@@ -20,7 +20,7 @@ def run():
 if __name__ == '__main__':
     logging.info('Starting Python Web Scraper..')
     run()
-    schedule.every().day.at("00:10").do(run)
-    while 1:
-        schedule.run_pending()
-        time.sleep(1)
+    # schedule.every().day.at("00:10").do(run)
+    # while 1:
+    #     schedule.run_pending()
+    #     time.sleep(1)
