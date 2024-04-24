@@ -10,7 +10,7 @@ jobs:
     runs-on: ubuntu-latest
 
     env:
-      MYSQL_HOST: ${{ secrets.MYSQL_HOST }}
+      MYSQL_HOST: ${{ secrets.SERVER_HOST }}
       MYSQL_DATABASE: ${{ secrets.MYSQL_DATABASE }}
       MYSQL_PORT: ${{ secrets.MYSQL_PORT }}
       MYSQL_USER: ${{ secrets.MYSQL_USER }}
