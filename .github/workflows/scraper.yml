@@ -3,7 +3,7 @@ name: Scraper
 on:
   schedule:
     # - cron: '0 5 * * *' # Every Day at Midnight (EST)
-    - cron: '*/10 * * * *'
+    - cron: '*15 * * * *'
 
 jobs:
   scrape-and-save:
