@@ -137,9 +137,9 @@ public class ActivityServiceImpl implements ActivityService {
                                 Math.min(stringDistanceScore(params.getQuery(), activityDTO.getType()),
                                         stringDistanceScore(params.getQuery(), activityDTO.getFacility().getTitle()))
                         ) < MAX_STRING_EDIT_DISTANCE)
+                .distinct()
                 .sorted(Comparator.comparing(typeDTO -> stringDistanceScore(params.getQuery(), typeDTO.getTitle())))
                 .sorted(getComparator(params.getSortEnum()))
-                .distinct()
                 .collect(Collectors.toList());
         return listToPage(activities,params.getPageNumber(), params.getPageSize());
     }
@@ -186,9 +186,9 @@ public class ActivityServiceImpl implements ActivityService {
                 .map(availability -> mapper.toDTO(availability, params.getLanguage(), params.getLatitude(), params.getLongitude()))
                 .filter(activityDTO -> Math.min(stringDistanceScore(params.getQuery(), activityDTO.getTitle()),
                         stringDistanceScore(params.getQuery(), activityDTO.getType())) < MAX_STRING_EDIT_DISTANCE)
+                .distinct()
                 .sorted(Comparator.comparing(typeDTO -> stringDistanceScore(params.getQuery(), typeDTO.getTitle())))
                 .sorted(getComparator(params.getSortEnum()))
-                .distinct()
                 .collect(Collectors.toList());
         return listToPage(activities,params.getPageNumber(), params.getPageSize());
     }

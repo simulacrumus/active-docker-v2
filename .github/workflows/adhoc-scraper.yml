@@ -1,0 +1,35 @@
+name: Ad-hoc Scraper
+
+on:
+  push:
+    branches:
+      - master
+
+jobs:
+  scrape-and-save:
+    runs-on: ubuntu-latest
+
+    env:
+      MYSQL_HOST: ${{ secrets.SERVER_HOST }}
+      MYSQL_DATABASE: ${{ secrets.MYSQL_DATABASE }}
+      MYSQL_PORT: ${{ secrets.MYSQL_PORT }}
+      MYSQL_USER: ${{ secrets.MYSQL_USER }}
+      MYSQL_PASSWORD: ${{ secrets.MYSQL_PASSWORD }}
+
+    steps:
+    - name: Checkout repository
+      uses: actions/checkout@v3
+
+    - name: Set up Python
+      uses: actions/setup-python@v2
+      with:
+        python-version: '3.9'
+
+    - name: Install dependencies
+      run: pip install -r scraper/requirements.txt
+
+    - name: Delay 2 mins
+      run: sleep 120
+
+    - name: Run scraper
+      run: python scraper/app.py

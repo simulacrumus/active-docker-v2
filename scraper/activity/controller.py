@@ -2,7 +2,7 @@ from db.activity import *
 from db.faciliity import *
 from db.engine import db_engine
 from utility import *
-from .scraper import * 
+from .scraper import *
 from pyjarowinkler import distance
 from datetime import date, datetime
 
@@ -39,7 +39,7 @@ def transform_schedules(facility_activities, current_activities):
     for facility_activity in facility_activities:
         try:
             activity = get_activity_by_scraped_activity_title(current_activities, activity_title=facility_activity['title'])
-            activity['times'] = create_activity_times_for_schedules(facility_activity['schedules'])
+            activity['times'] = create_activity_times_for_schedules(facility_activity['schedules'],facility_activity['period'])
             activities.append(activity)
         except(RuntimeError) as e:
             logging.warning(e)
@@ -53,20 +53,34 @@ def get_activity_by_scraped_activity_title(current_activities:list, activity_tit
         if new_score > score:
             matched_activity = current_activity
             score = new_score
-    if score < 0.8:
+    if score < 0.9:
         raise RuntimeError('No matching activity found for {}'.format(activity_title))
     return matched_activity
 
-def create_activity_times_for_schedules(schedules):
-    activity_times_for_next_week = []
-    for i in range(len(schedules)):
-        for activity_time in schedules[i]['times']:
-            next_weekday = get_next_weekday(date.today(), i).strftime('%Y-%m-%d ')
-            start_time = datetime.strptime(next_weekday + activity_time['start_time'], '%Y-%m-%d %H:%M:%S')
-            end_time = datetime.strptime(next_weekday + activity_time['end_time'], '%Y-%m-%d %H:%M:%S')
-
-            if start_time >= end_time:
-                logging.warning('{} is greater than {}, skipping'.format(start_time, end_time))
-                continue
-            activity_times_for_next_week.append({"start_time":str(start_time),"end_time":str(end_time)})
-    return activity_times_for_next_week
+def create_activity_times_for_schedules(schedules, period):
+    activity_times = []
+    period_start_date = period["period_start"]
+    period_end_date = period["period_end"]
+    
+    # If period end is in future
+    if period_end_date > datetime.today():
+        current_date = period_start_date
+        while current_date <= period_end_date:
+            index = current_date.weekday()
+            if len(schedules) == 7:
+                for activity_time in schedules[index]:
+                    day = current_date.strftime('%Y-%m-%d ')
+                    start_time = datetime.strptime(day + activity_time['start_time'], '%Y-%m-%d %H:%M:%S')
+                    end_time = datetime.strptime(day + activity_time['end_time'], '%Y-%m-%d %H:%M:%S')
+                    if start_time >= end_time:
+                        logging.warning('{} is greater than {}, skipping'.format(start_time, end_time))
+                        continue
+                    activity_times.append({"start_time":str(start_time),"end_time":str(end_time)})
+            else:
+                logging.warning('Schedules are not well structured')
+                break
+            current_date += timedelta(days=1)
+    else: 
+        logging.info('End date is in past: {}'.format(period_end_date))
+        logging.info('Skipping..')
+    return activity_times

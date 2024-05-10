@@ -63,7 +63,7 @@ public class FacilityController {
                 .language(language);
         try{
             return service.findAll(params);
-        }catch (IllegalArgumentException e){
+        } catch (IllegalArgumentException e){
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Bad request");
         } catch (NoSuchElementException e){
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Not found");
@@ -92,7 +92,7 @@ public class FacilityController {
                 .city(city);
         try{
             return service.findById(params);
-        }catch (IllegalArgumentException e){
+        } catch (IllegalArgumentException e){
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Bad request");
         } catch (NoSuchElementException e){
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Not found");

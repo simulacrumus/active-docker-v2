@@ -3,7 +3,7 @@ package com.example.active.util;
 import org.apache.commons.text.similarity.LevenshteinDistance;
 
 public class Utility {
-    public static final int MAX_STRING_EDIT_DISTANCE = 3;
+    public static final int MAX_STRING_EDIT_DISTANCE = 2;
     public static int stringDistanceScore(String query, String title){
         query = query.toLowerCase();
         title = title.toLowerCase();

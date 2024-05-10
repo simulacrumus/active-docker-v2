@@ -84,3 +84,8 @@ def scrape_facility_reservation_links(url:str):
     for rl in reservation_links:
         reservations.append(os.path.basename(os.path.normpath(rl.attrs.get("href"))))
     return remove_duplicates_from_list(reservations)
+
+def facility_has_drop_in_actiivities(url):
+    soup = get_soup_for_url(url=url)
+    drop_in_activities = soup.find_all('button', text=re.compile('Drop-in'))
+    return drop_in_activities

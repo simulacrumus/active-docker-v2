@@ -31,7 +31,7 @@ def check_new_facilities(scraped_facilities:list,current_facilities:list):
                 if score > 0.9:
                     match = True
                     break
-            if not match:
+            if not match and 'senior' not in scraped_facility['title'].lower():
                 new_facilities.append(scraped_facility)
         
         if new_facilities:
@@ -55,6 +55,9 @@ def filter_facilities_with_drop_in_activity_schedules(facilities:list):
             if reservation_links:
                 facility['reservation_links'] = reservation_links
                 filtered_facilities.append(facility)
+            if facility_has_drop_in_actiivities(url=facility['url']):
+                filtered_facilities.append(facility)
+
         except(Exception) as e:
             logging.warning('Error while filtering facilities with drop-in activity schedules')
             logging.warning(e)
