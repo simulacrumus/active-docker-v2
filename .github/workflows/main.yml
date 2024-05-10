@@ -3,7 +3,7 @@ name: Server Build and Run
 on:
   push:
     branches:
-      - master
+      - version3
 
 jobs:
   copy_source_code_to_server:
