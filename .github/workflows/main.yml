@@ -4,6 +4,7 @@ on:
   push:
     branches:
       - version3
+      - master
 
 jobs:
   copy_source_code_to_server:

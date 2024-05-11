@@ -4,6 +4,7 @@ on:
   push:
     branches:
       - version3
+      - master
 
 jobs:
   scrape-and-save:
