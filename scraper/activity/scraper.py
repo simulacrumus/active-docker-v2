@@ -88,7 +88,7 @@ def create_date_periods(period_string):
             period_start_string = period_string.split("starting")[-1].strip()
             period_end_string = (datetime.now() + timedelta(days=7)).strftime("%B %d, %Y")
         else:
-            logging.info('Period string has to: {}'.format(period_string))
+            logging.info('Period string: {}'.format(period_string))
             period_start_string = period_string.split("to")[0].strip()
             period_end_string = period_string.split("to")[1].strip()
 
