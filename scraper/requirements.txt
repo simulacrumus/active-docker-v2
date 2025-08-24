@@ -4,3 +4,5 @@ beautifulsoup4==4.11.2
 pyjarowinkler==1.8
 sqlalchemy==2.0.7
 mysql-connector-python
+playwright
+asyncio

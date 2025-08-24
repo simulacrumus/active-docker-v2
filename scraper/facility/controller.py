@@ -12,12 +12,12 @@ def saved_facilities():
     except(Exception) as e:
         logging.error(e)
 
-def scraped_facilities():
+async def scraped_facilities():
     logging.info('Scraping facilities from source websites..')
     try:
-        all_facilities = scrape_all_facilities()
+        all_facilities = await scrape_all_facilities()
         logging.info('Facilities downloaded from source websites')
-        return filter_facilities_with_drop_in_activity_schedules(all_facilities)
+        return await filter_facilities_with_drop_in_activity_schedules(all_facilities)
     except(Exception) as e:
         logging.error(e)
 
@@ -46,16 +46,16 @@ def check_new_facilities(scraped_facilities:list,current_facilities:list):
         logging.error('Error while comparing facilities')
         logging.error(e)
     
-def filter_facilities_with_drop_in_activity_schedules(facilities:list):
+async def filter_facilities_with_drop_in_activity_schedules(facilities:list):
     logging.info('Filtering Facilities with drop-in activity schedules')
     filtered_facilities = []
     for facility in facilities:
         try:
-            reservation_links = scrape_facility_reservation_links(url=facility['url'])
+            reservation_links = await scrape_facility_reservation_links(url=facility['url'])
             if reservation_links:
                 facility['reservation_links'] = reservation_links
                 filtered_facilities.append(facility)
-            if facility_has_drop_in_actiivities(url=facility['url']):
+            if await facility_has_drop_in_actiivities(url=facility['url']):
                 filtered_facilities.append(facility)
 
         except(Exception) as e:

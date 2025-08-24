@@ -1,3 +1,4 @@
+import asyncio
 import logging
 import schedule
 import time
@@ -11,12 +12,12 @@ logging.basicConfig(
     datefmt='%Y-%m-%d %H:%M:%S'
 )
 
-def run():
+async def run():
     current_facilities = saved_facilities()
-    listed_facilities = scraped_facilities()
+    listed_facilities = await scraped_facilities()
     check_new_facilities(listed_facilities, current_facilities)
-    update_activities_for_facilities(current_facilities)
+    await update_activities_for_facilities(current_facilities)
 
 if __name__ == '__main__':
     logging.info('Starting Python Web Scraper..')
-    run()
+    asyncio.run(run())

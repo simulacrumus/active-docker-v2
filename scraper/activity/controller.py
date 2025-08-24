@@ -6,13 +6,13 @@ from .scraper import *
 from pyjarowinkler import distance
 from datetime import date, datetime
 
-def update_activities_for_facilities(facilities:list):
+async def update_activities_for_facilities(facilities:list):
     current_activities = saved_activities()
     with Session(db_engine) as session:
         for facility in facilities:
             logging.info('Scraping activities for {}'.format(facility['title']))
-            soup = get_soup_for_url(url=facility['url'])
-            facility_activities = scrape_facility_schedules(soup)
+            soup = await get_soup_for_url(url=facility['url'])
+            facility_activities = await scrape_facility_schedules(soup)
             facility['activities'] = transform_schedules(facility_activities, current_activities)
             logging.info('Saving activities for {}'.format(facility['title']))
             availability_count = 0

@@ -4,13 +4,13 @@ from config import *
 from utility import *
 from activity.scraper import *
 
-def scrape_all_facilities():
+async def scrape_all_facilities():
     logging.info('Scraping Facilities')
     facilities = []
     try:
-        facility_list_page_links = scrape_all_facility_list_page_links()
+        facility_list_page_links = await scrape_all_facility_list_page_links()
         for link in facility_list_page_links:
-            facility_soups = scrape_facilities_from_list_page(url=link)
+            facility_soups = await scrape_facilities_from_list_page(url=link)
             for soup in facility_soups:
                 facility = scrape_facility_from_list_page_table_row(facility_soup=soup)
                 facilities.append(facility)
@@ -18,13 +18,13 @@ def scrape_all_facilities():
         logging.warning(e)
     return facilities
 
-def scrape_all_facility_list_page_links():
+async def scrape_all_facility_list_page_links():
     facility_pages = []
     try:
         page_number = 0
         url = FACILITIES_LIST_URL + str(page_number)
-        soup = get_soup_for_url(url=url)
-        pages = soup.find("ul",{"class":"pager__items"}).find_all("li")
+        soup = await get_soup_for_url(url=url)
+        pages = soup.find("ul", class_="pager__items").find_all("li")
         max_page_number = len(pages)
         while page_number < max_page_number-1:
             url = FACILITIES_LIST_URL + str(page_number)
@@ -34,10 +34,10 @@ def scrape_all_facility_list_page_links():
         logging.warning(e)
     return facility_pages
 
-def scrape_facilities_from_list_page(url:str):
+async def scrape_facilities_from_list_page(url:str):
     try:
         facilities = []
-        soup = get_soup_for_url(url=url)
+        soup = await get_soup_for_url(url=url)
         facility_list = soup.find("tbody").find_all("tr")
         for facility in facility_list:
             facilities.append(facility)
@@ -77,15 +77,15 @@ def scrape_facility_schedules(soup):
                 all_schedules.append({"title":title,"schedules":hours})
     return all_schedules
 
-def scrape_facility_reservation_links(url:str):
-    soup = get_soup_for_url(url=url)
+async def scrape_facility_reservation_links(url:str):
+    soup = await get_soup_for_url(url=url)
     reservation_links = soup.find_all("a", text=re.compile("Reserve a spot"))
     reservations = []
     for rl in reservation_links:
         reservations.append(os.path.basename(os.path.normpath(rl.attrs.get("href"))))
     return remove_duplicates_from_list(reservations)
 
-def facility_has_drop_in_actiivities(url):
-    soup = get_soup_for_url(url=url)
+async def facility_has_drop_in_actiivities(url):
+    soup = await get_soup_for_url(url=url)
     drop_in_activities = soup.find_all('button', text=re.compile('Drop-in'))
     return drop_in_activities

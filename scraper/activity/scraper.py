@@ -59,7 +59,7 @@ def scrape_activity_hours(soup):
             logging.warning('Original hour string: {}'.format(hour_str))
     return hours
 
-def scrape_facility_schedules(soup):
+async def scrape_facility_schedules(soup):
     all_schedules = []
     activities = soup.find_all("table")
     for activity in activities:
