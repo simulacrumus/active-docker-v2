@@ -18,22 +18,32 @@ jobs:
       MYSQL_PASSWORD: ${{ secrets.MYSQL_PASSWORD }}
 
     steps:
-    - name: Checkout repository
-      uses: actions/checkout@v3
+      - name: Checkout repository
+        uses: actions/checkout@v3
 
-    - name: Set up Python
-      uses: actions/setup-python@v2
-      with:
-        python-version: '3.9'
+      - name: Set up Python
+        uses: actions/setup-python@v2
+        with:
+          python-version: "3.9"
 
-    - name: Install dependencies
-      run: pip install -r scraper/requirements.txt
+      - name: Install Playwright
+        run: |
+          pip install playwright
+          playwright install chromium
 
+<<<<<<< HEAD
     - name: Install Playwright Browsers
       run: playwright install
     
     - name: Delay 2 mins
       run: sleep 120
+=======
+      - name: Install dependencies
+        run: pip install -r scraper/requirements.txt
+>>>>>>> 32df3c8 (chromium solution)
 
-    - name: Run scraper
-      run: python scraper/app.py
+      - name: Delay 2 mins
+        run: sleep 120
+
+      - name: Run scraper
+        run: python scraper/app.py

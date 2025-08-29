@@ -29,20 +29,54 @@ def get_next_weekday(date, weekday):
 
 async def get_soup_for_url(url:str):
     async with async_playwright() as p:
-        browser = await p.chromium.launch(headless=True)
+        # Use a real browser profile to avoid detection
+        browser = await p.chromium.launch_persistent_context(
+            user_data_dir="./browser_data",
+
+            # headless=False,  # Set to True in production
+            # args=[
+            #     '--disable-blink-features=AutomationControlled',
+            #     '--no-sandbox',
+            #     '--disable-dev-shm-usage'
+            # ]
+
+            headless=True,
+            args=[
+                '--disable-blink-features=AutomationControlled',
+                '--no-sandbox',
+                '--disable-dev-shm-usage',
+                '--disable-gpu',
+                '--disable-software-rasterizer',
+                '--disable-extensions',
+                '--single-process',
+                '--no-zygote'
+            ]
+        )
+        
         page = await browser.new_page()
         
-        # Add realistic headers to avoid bot detection
+        # Set realistic viewport and user agent
+        await page.set_viewport_size({"width": 1920, "height": 1080})
         await page.set_extra_http_headers({
             'User-Agent': 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36',
             'Accept': 'text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,*/*;q=0.8',
-            'Accept-Language': 'en-US,en;q=0.5',
-            'Accept-Encoding': 'gzip, deflate',
+            'Accept-Language': 'en-US,en;q=0.9',
+            'Accept-Encoding': 'gzip, deflate, br',
+            'DNT': '1',
             'Connection': 'keep-alive',
+            'Upgrade-Insecure-Requests': '1',
         })
         
+        # Navigate and wait for content to load
         await page.goto(url, wait_until='networkidle')
-        await page.wait_for_timeout(2000)  # Wait 2 seconds to avoid rapid requests
+        # await page.wait_for_timeout(2000)  # Wait 2 seconds
+        
+        # Try to handle any CAPTCHA or challenge
+        try:
+            await page.wait_for_selector('body:not([style*="height:100%"])', timeout=10000)
+        except:
+            pass
+            
         content = await page.content()
         await browser.close()
         return BeautifulSoup(content, 'html.parser')

@@ -1,6 +1,8 @@
 .env
 .idea
 .vscode/
+browser_data/
+.venv/
 scraper/env/
 scraper/venv/
 scraper/__pycache__/

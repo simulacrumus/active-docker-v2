@@ -23,6 +23,11 @@ jobs:
       uses: actions/setup-python@v2
       with:
         python-version: '3.9'
+    
+    - name: Install Playwright
+        run: |
+          pip install playwright
+          playwright install chromium
 
     - name: Install dependencies
       run: pip install -r scraper/requirements.txt
