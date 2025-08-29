@@ -31,16 +31,8 @@ jobs:
           pip install playwright
           playwright install chromium
 
-<<<<<<< HEAD
-    - name: Install Playwright Browsers
-      run: playwright install
-    
-    - name: Delay 2 mins
-      run: sleep 120
-=======
       - name: Install dependencies
         run: pip install -r scraper/requirements.txt
->>>>>>> 32df3c8 (chromium solution)
 
       - name: Delay 2 mins
         run: sleep 120
