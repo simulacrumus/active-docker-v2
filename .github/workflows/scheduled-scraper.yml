@@ -2,7 +2,7 @@ name: Scraper
 
 on:
   schedule:
-    - cron: '0 5 * * *' # Every Day at 5:00 AM (EST)
+    - cron: "0 5 * * *" # Every Day at 5:00 AM (EST)
 
 jobs:
   scrape-and-save:
@@ -16,24 +16,22 @@ jobs:
       MYSQL_PASSWORD: ${{ secrets.MYSQL_PASSWORD }}
 
     steps:
-    - name: Checkout repository
-      uses: actions/checkout@v3
+      - name: Checkout repository
+        uses: actions/checkout@v3
 
-    - name: Set up Python
-      uses: actions/setup-python@v2
-      with:
-        python-version: '3.9'
-    
-    - name: Install Playwright
-        run: |
-          pip install playwright
-          playwright install chromium
+      - name: Set up Python
+        uses: actions/setup-python@v2
+        with:
+          python-version: "3.9"
 
-    - name: Install dependencies
-      run: pip install -r scraper/requirements.txt
+      - name: Install dependencies
+        run: pip install -r scraper/requirements.txt
 
-    - name: Install Playwright Browsers
-      run: playwright install
-      
-    - name: Run scraper
-      run: python scraper/app.py
+      - name: Install Playwright Browsers
+        run: playwright install
+
+      - name: Install chromium
+        run: playwright install chromium
+
+      - name: Run scraper
+        run: python scraper/app.py

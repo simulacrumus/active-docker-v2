@@ -26,13 +26,14 @@ jobs:
         with:
           python-version: "3.9"
 
-      - name: Install Playwright
-        run: |
-          pip install playwright
-          playwright install chromium
-
       - name: Install dependencies
         run: pip install -r scraper/requirements.txt
+
+      - name: Install Playwright Browsers
+        run: playwright install
+
+      - name: Install chromium
+        run: playwright install chromium
 
       - name: Delay 2 mins
         run: sleep 120
