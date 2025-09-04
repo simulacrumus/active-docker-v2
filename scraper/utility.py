@@ -43,7 +43,7 @@ async def get_soup_for_url(url:str):
         viewport_width = random.randint(1280, 1920)
         viewport_height = random.randint(800, 1200)
 
-        headless_env = os.getenv("HEADLESS", "0").strip() in ("1", "true", "True")
+        headless_env = True
         browser = await p.chromium.launch_persistent_context(
             user_data_dir="./browser_data",
             headless=headless_env,
